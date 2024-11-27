@@ -15,18 +15,15 @@ export function Header({ toggleSidebar }: HeaderProps) {
           <span className="sr-only">Toggle sidebar</span>
         </Button>
         <Image
-          src="https://cdn.glitch.global/ed49bbeb-c96f-423f-92ad-bd1764214e42/44.svg"
+          src="ABACATE - PRETO.svg"
           alt="Logo"
-          width={55}
-          height={55}
+          width={70}
+          height={70}
           className="rounded-full"
         />
-        <h1 className="text-xl font-bold">Construtor de Fluxo - Hello Bot</h1>
+        <h1 className="text-xl font-bold">Construtor de Fluxo de Diálogo</h1>
       </div>
     </header>
   )
 }
-// PS C:\Users\adema\OneDrive\Documentos\BACKUP\OTHERS\ABACATE\DEV\DRAG_DROP_FLOW_HELLO_BOT>
-// https://www.adobe.com/express/feature/image/convert/png-to-svg
-//https://www.figma.com/design/IiscOIQqa3uVO8YBRvVJFL/ABACATE-SITE?node-id=27-659&node-type=frame&t=kD5zUA58AriN0nIQ-0
-//https://glitch.com/edit/#!/peat-sage-lemur?path=README.md%3A1%3A0
+

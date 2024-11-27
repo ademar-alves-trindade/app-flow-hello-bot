@@ -7,6 +7,22 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.custom-handle-close {
+  width: 10px !important;
+  height: 10px !important;
+  background-color: #ef4444 !important;
+  border-radius: 50%;
+}
+
+.custom-handle-message {
+  width: 10px !important;
+  height: 10px !important;
+  background-color: blue !important;
+  border-radius: 50%;
+}
+
+
+
 @layer base {
   :root {
     --background: 0 0% 100%;

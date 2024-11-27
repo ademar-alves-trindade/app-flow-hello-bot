@@ -21,74 +21,14 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Sidebar } from '@/components/Sidebar';
 
+
+
 const initialNodes: Node[] = [
-  {
-    id: '1',
-    type: 'trigger',
-    data: { 
-      label: 'Gatilho',
-      onDelete: () => {
-        setNodes((nds) => nds.filter((node) => node.id !== '1'));
-        setEdges((eds) => eds.filter((edge) => edge.source !== '1' && edge.target !== '1'));
-      }
-    },
-    position: { x: 250, y: 0 },
-  },
-  {
-    id: '2',
-    type: 'sendMessage',
-    data: { 
-      label: 'Enviar Mensagem',
-      onDelete: () => {
-        setNodes((nds) => nds.filter((node) => node.id !== '2'));
-        setEdges((eds) => eds.filter((edge) => edge.source !== '2' && edge.target !== '2'));
-      }
-    },
-    position: { x: 250, y: 100 },
-  },
-  {
-    id: '3',
-    type: 'condition',
-    data: { 
-      label: 'Condição',
-      onDelete: () => {
-        setNodes((nds) => nds.filter((node) => node.id !== '3'));
-        setEdges((eds) => eds.filter((edge) => edge.source !== '3' && edge.target !== '3'));
-      }
-    },
-    position: { x: 250, y: 200 },
-  },
-  {
-    id: '4',
-    type: 'actions',
-    data: { 
-      label: 'Ações',
-      onDelete: () => {
-        setNodes((nds) => nds.filter((node) => node.id !== '4'));
-        setEdges((eds) => eds.filter((edge) => edge.source !== '4' && edge.target !== '4'));
-      }
-    },
-    position: { x: 250, y: 300 },
-  },
-  {
-    id: '5',
-    type: 'closeChat',
-    data: { 
-      label: 'Encerrar Chat',
-      onDelete: () => {
-        setNodes((nds) => nds.filter((node) => node.id !== '5'));
-        setEdges((eds) => eds.filter((edge) => edge.source !== '5' && edge.target !== '5'));
-      }
-    },
-    position: { x: 250, y: 400 },
-  },
+
 ];
 
 const initialEdges: Edge[] = [
-  { id: 'e1-2', source: '1', target: '2' },
-  { id: 'e2-3', source: '2', target: '3' },
-  { id: 'e3-4', source: '3', target: '4' },
-  { id: 'e4-5', source: '4', target: '5' },
+
 ];
 
 const onDragOver = (event: React.DragEvent<HTMLDivElement>) => {
@@ -123,12 +63,6 @@ export default function DialogueFlow() {
               ...node.data,
               message: node.data.message || '',
               quickResponses: node.data.quickResponses || [],
-            };
-            break;
-          case 'condition':
-            exportNode.data = {
-              ...node.data,
-              condition: node.data.condition || '',
             };
             break;
           case 'actions':
@@ -192,7 +126,7 @@ export default function DialogueFlow() {
           type,
           position,
           data: { 
-            label: type.charAt(0).toUpperCase() + type.slice(1),
+            label: type === 'inicio' ? 'Início' : type.charAt(0).toUpperCase() + type.slice(1),
             onDelete: () => {
               setNodes((nds) => nds.filter((node) => node.id !== newNode.id));
               setEdges((eds) => eds.filter((edge) => edge.source !== newNode.id && edge.target !== newNode.id));
