@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Handle, Position } from 'reactflow';
 import { MessageCircle, X, Plus, Trash2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ interface SendMessageNodeProps {
     onDelete: () => void;
     message?: string;
     quickResponses?: QuickResponse[];
+    messageNumber: number;
   };
 }
 
@@ -24,13 +25,13 @@ export const SendMessageNode: React.FC<SendMessageNodeProps> = ({ data }) => {
   const [quickResponses, setQuickResponses] = useState<QuickResponse[]>(data.quickResponses || []);
   const [nextId, setNextId] = useState(1);
 
-  const addQuickResponse = () => {
+  const addQuickResponse = useCallback(() => {
     const newResponse = { id: `${nextId}`, text: `Opção ${nextId}` };
     const updatedResponses = [...quickResponses, newResponse];
     setQuickResponses(updatedResponses);
     setNextId(nextId + 1);
     data.quickResponses = updatedResponses;
-  };
+  }, [quickResponses, nextId, data]);
 
   const removeQuickResponse = (id: string) => {
     const updatedResponses = quickResponses.filter(qr => qr.id !== id);
@@ -42,14 +43,14 @@ export const SendMessageNode: React.FC<SendMessageNodeProps> = ({ data }) => {
     if (quickResponses.length === 0) {
       addQuickResponse();
     }
-  }, []);
+  }, [quickResponses.length, addQuickResponse]);
 
   return (
     <Card className="w-[400px] bg-white shadow-lg relative">
       <div className="p-4">
         <div className="flex items-center gap-2 mb-4">
           <MessageCircle className="text-blue-500" />
-          <h3 className="text-lg font-semibold">Mensagem</h3>
+          <h3 className="text-lg font-semibold">Mensagem {data.messageNumber}</h3>
           <Button variant="ghost" size="sm" onClick={data.onDelete}>
             <Trash2 className="h-4 w-4 text-gray-500" />
           </Button>
@@ -88,14 +89,11 @@ export const SendMessageNode: React.FC<SendMessageNodeProps> = ({ data }) => {
                 <Input
                   value={qr.text}
                   onChange={(e) => {
-                    setQuickResponses(
-                      quickResponses.map((r) =>
-                        r.id === qr.id ? { ...r, text: e.target.value } : r
-                      )
-                    );
-                    data.quickResponses = quickResponses.map((r) =>
+                    const updatedResponses = quickResponses.map((r) =>
                       r.id === qr.id ? { ...r, text: e.target.value } : r
                     );
+                    setQuickResponses(updatedResponses);
+                    data.quickResponses = updatedResponses;
                   }}
                   className="flex-1"
                 />
@@ -124,15 +122,12 @@ export const SendMessageNode: React.FC<SendMessageNodeProps> = ({ data }) => {
           </div>
         </div>
 
-
-
         <Handle
           type="target"
           position={Position.Left}
-          className="custom-handle-message"
+          className="w-3 h-3 !bg-blue-500"
         />
       </div>
     </Card>
   );
 };
-

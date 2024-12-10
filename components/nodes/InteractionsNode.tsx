@@ -1,29 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Handle, Position } from 'reactflow';
-import { Zap, Trash2, Plus, X } from 'lucide-react';
+import { MessageCircle, X, Plus, Trash2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 interface QuickResponse {
   id: string;
   text: string;
 }
 
-interface InicioNodeProps {
+interface InteractionsNodeProps {
   data: {
     label: string;
     onDelete: () => void;
     question?: string;
-    message?: string;
+    instanceId: number;
     quickResponses?: QuickResponse[];
+    message?: string;
   };
 }
 
-export const InicioNode: React.FC<InicioNodeProps> = ({ data }) => {
-  const [message, setMessage] = useState(data.message || 'Bem-vindo! Como posso ajudar?');
+export const InteractionsNode: React.FC<InteractionsNodeProps> = ({ data }) => {
+  const [message, setMessage] = useState(data.message || 'Digite sua avaliação aqui');
   const [quickResponses, setQuickResponses] = useState<QuickResponse[]>(data.quickResponses || []);
   const [nextId, setNextId] = useState(quickResponses.length + 1);
 
@@ -57,11 +58,9 @@ export const InicioNode: React.FC<InicioNodeProps> = ({ data }) => {
   return (
     <Card className="w-[400px] bg-white shadow-lg">
       <div className="p-4">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <Zap className="text-yellow-500" />
-            <h3 className="text-lg font-semibold">Início</h3>
-          </div>
+        <div className="flex items-center gap-2 mb-4">
+          <MessageCircle className="text-blue-500" />
+          <h3 className="text-lg font-semibold">Interação {data.instanceId}</h3>
           <Button variant="ghost" size="sm" onClick={data.onDelete}>
             <Trash2 className="h-4 w-4 text-gray-500" />
           </Button>
@@ -69,12 +68,12 @@ export const InicioNode: React.FC<InicioNodeProps> = ({ data }) => {
 
         <div className="space-y-4">
           <div>
-            <Label htmlFor="welcome-message" className="block text-gray-600 mb-2">
-              Mensagem de Boas-vindas
+            <Label htmlFor="user-message" className="block text-gray-600 mb-2">
+              Mensagem
             </Label>
             <Textarea
-              id="welcome-message"
-              placeholder="Digite a mensagem de boas-vindas"
+              id="user-message"
+              placeholder="Digite sua avaliação aqui"
               value={message}
               onChange={(e) => {
                 setMessage(e.target.value);
@@ -84,7 +83,7 @@ export const InicioNode: React.FC<InicioNodeProps> = ({ data }) => {
             />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2 mt-4">
             <div className="flex justify-between items-center">
               <Label className="text-gray-600">Respostas Rápidas</Label>
               <Button
@@ -119,10 +118,10 @@ export const InicioNode: React.FC<InicioNodeProps> = ({ data }) => {
                     type="source"
                     position={Position.Right}
                     id={`resposta-${qr.id}`}
-                    className="custom-handle-message"
+                    className="w-3 h-3 !bg-blue-500"
                     style={{
                       top: '50%',
-                      right: '-20px',
+                      right: '-4px',
                       transform: 'translateY(-50%)',
                     }}
                   />
@@ -131,6 +130,16 @@ export const InicioNode: React.FC<InicioNodeProps> = ({ data }) => {
             </div>
           </div>
         </div>
+        <Handle
+          type="target"
+          position={Position.Left}
+          className="w-3 h-3 !bg-blue-500"
+          style={{
+            top: '50%',
+            left: '-4px',
+            transform: 'translateY(-50%)',
+          }}
+        />
       </div>
     </Card>
   );

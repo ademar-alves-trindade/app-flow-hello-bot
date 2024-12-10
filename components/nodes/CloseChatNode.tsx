@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Handle, Position } from 'reactflow';
-import { X, Trash2 } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { Handle, Position } from "reactflow";
+import { X, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -8,12 +8,19 @@ interface CloseChatNodeProps {
   data: {
     label: string;
     onDelete: () => void;
-    closingMessage?: string;
+    message?: string;
+    onUpdateMessage?: (message: string) => void;
   };
 }
 
 export const CloseChatNode: React.FC<CloseChatNodeProps> = ({ data }) => {
-  const [closingMessage, setClosingMessage] = useState(data.closingMessage || '');
+  const [message, setMessage] = useState(data.message || "");
+
+  useEffect(() => {
+    if (data.onUpdateMessage) {
+      data.onUpdateMessage(message);
+    }
+  }, [message, data]);
 
   return (
     <Card className="w-[400px] bg-white shadow-lg">
@@ -29,15 +36,14 @@ export const CloseChatNode: React.FC<CloseChatNodeProps> = ({ data }) => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-600 mb-2">Mensagem de Encerramento</label>
+          <label className="block text-gray-600 mb-2">
+            Mensagem de Encerramento
+          </label>
           <textarea
             className="w-full p-2 border rounded-md min-h-[100px] text-gray-700 placeholder-gray-400"
             placeholder="Digite a mensagem de encerramento"
-            value={closingMessage}
-            onChange={(e) => {
-              setClosingMessage(e.target.value);
-              data.closingMessage = e.target.value;
-            }}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
           />
         </div>
 
@@ -50,4 +56,3 @@ export const CloseChatNode: React.FC<CloseChatNodeProps> = ({ data }) => {
     </Card>
   );
 };
-
